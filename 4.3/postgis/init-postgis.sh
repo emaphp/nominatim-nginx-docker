@@ -1,0 +1,21 @@
+#! /bin/sh
+
+set -e
+
+psql -v ON_ERROR_STOP=1 --username "$POSTGIS_USER" --dbname "$POSTGIS_DB" <<-EOSQL
+    -- Add nominatim user
+    CREATE USER $POSTGIS_ADMIN_USER WITH PASSWORD '$POSTGIS_ADMIN_PASSWORD';
+    ALTER DATABASE $POSTGIS_DB OWNER TO $POSTGIS_ADMIN_USER;
+
+    -- Add read-only user
+    CREATE USER "$POSTGIS_RO_USER" WITH PASSWORD '$POSTGIS_RO_PASSWORD';
+
+    -- Add extensions
+    CREATE EXTENSION IF NOT EXISTS hstore;
+    CREATE EXTENSION IF NOT EXISTS postgis;
+    CREATE EXTENSION IF NOT EXISTS postgis_raster;
+    CREATE EXTENSION IF NOT EXISTS postgis_topology;
+    CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
+    CREATE EXTENSION IF NOT EXISTS postgis_tiger_geocoder;
+EOSQL
+

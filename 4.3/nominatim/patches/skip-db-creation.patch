@@ -1,0 +1,23 @@
+diff --git a/nominatim/tools/database_import.py b/nominatim/tools/database_import.py
+index cb620d4..831ab53 100644
+--- a/nominatim/tools/database_import.py
++++ b/nominatim/tools/database_import.py
+@@ -38,7 +38,7 @@ def _require_version(module: str, actual: Tuple[int, int], expected: Tuple[int,
+         raise UsageError(f'{module} is too old.')
+ 
+ 
+-def setup_database_skeleton(dsn: str, rouser: Optional[str] = None) -> None:
++def setup_database_skeleton(dsn: str, rouser: Optional[str] = None, do_create: bool = False) -> None:
+     """ Create a new database for Nominatim and populate it with the
+         essential extensions.
+ 
+@@ -52,6 +52,9 @@ def setup_database_skeleton(dsn: str, rouser: Optional[str] = None) -> None:
+ 
+         Requires superuser rights by the caller.
+     """
++    if not do_create:
++        return
++
+     proc = subprocess.run(['createdb'], env=get_pg_env(dsn), check=False)
+ 
+     if proc.returncode != 0:

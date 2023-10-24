@@ -1,0 +1,67 @@
+version: '3'
+
+volumes:
+  nominatim_nginx_postgis_db:
+
+services:
+  postgis:
+    image: postgis/postgis:${POSTGIS_VERSION}
+    container_name: ${POSTGIS_CONTAINER_NAME}
+    environment:
+      # Image setup
+      POSTGRES_DB: ${POSTGIS_DB}
+      POSTGRES_USER: ${POSTGIS_USER}
+      POSTGRES_PASSWORD: ${POSTGIS_PASSWORD}
+      # Initialization script
+      POSTGIS_DB: ${POSTGIS_DB}
+      POSTGIS_USER: ${POSTGIS_USER}
+      POSTGIS_PASSWORD: ${POSTGIS_PASSWORD}
+      POSTGIS_ADMIN_USER: ${POSTGIS_ADMIN_USER}
+      POSTGIS_ADMIN_PASSWORD: ${POSTGIS_ADMIN_PASSWORD}
+      POSTGIS_RO_USER: ${POSTGIS_RO_USER}
+      POSTGIS_RO_PASSWORD: ${POSTGIS_RO_PASSWORD}
+    expose:
+      - 5432
+    ports:
+      - ${POSTGIS_PORT}:5432
+    volumes:
+      - nominatim_nginx_postgis_db:/var/lib/postgresql/data
+      - ./postgis/init-postgis.sh:/docker-entrypoint-initdb.d/init-postgis.sh
+      # Import config
+      - ./postgis/postgresql.import.conf:/usr/local/share/postgresql/postgresql.conf.sample
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGIS_DB}"]
+      interval: 10s
+      timeout: 10s
+      retries: 2
+    restart: unless-stopped
+
+  nominatim:
+    image: emaphp/nominatim-nginx-docker:1.0.0-4.3.1
+    container_name: ${NOMINATIM_CONTAINER_NAME:-nominatim}
+    environment:
+      # Nominatim
+      NOMINATIM_DATABASE_DSN: ${NOMINATIM_DATABASE_DSN}
+      NOMINATIM_REPLICATION_URL: ${NOMINATIM_REPLICATION_URL}
+      # PostGIS
+      PGHOST: ${NOMINATIM_POSTGIS_HOST}
+      PGDATABASE: ${NOMINATIM_POSTGIS_DB}
+      PGUSER: ${NOMINATIM_POSTGIS_USER}
+      PGPASSWORD: ${NOMINATIM_POSTGIS_PASSWORD}
+      # Scripts
+      PBF_PATH: ${NOMINATIM_PBF_PATH}
+      UPDATE_MODE: ${NOMINATIM_UPDATE_MODE}
+      # REVERSE_ONLY:
+      # THREADS:
+    volumes:
+      - ./docker/nominatim/pbf:/app/pbf
+      - ./docker/nominatim/scripts:/app/scripts
+      - ./docker/nominatim/config/.env:/nominatim/env
+    ports:
+      - ${NOMINATIM_PORT}:8080
+    depends_on:
+      postgis:
+        condition: service_healthy
+    command: ["/app/scripts/import.sh"]
+    # command: ["/app/scripts/runserver.sh"]
+

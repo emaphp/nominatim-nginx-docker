@@ -1,0 +1,42 @@
+COMPOSE_PROJECT_NAME=nominatim-docker-nginx
+
+### POSTGIS ############################################
+
+POSTGIS_VERSION=14-3.4-alpine
+POSTGIS_CONTAINER_NAME=postgis
+POSTGIS_PORT=5432
+POSTGIS_DB=nominatim
+
+# Superadmin
+POSTGIS_USER=admin
+POSTGIS_PASSWORD=admin
+
+# Admin
+POSTGIS_ADMIN_USER=nominatim
+POSTGIS_ADMIN_PASSWORD=nominatim
+
+# Read-only
+POSTGIS_RO_USER=www-data
+POSTGIS_RO_PASSWORD=www-data
+
+### NOMINATIM ##########################################
+
+NOMINATIM_CONTAINER_NAME=nominatim
+
+# Building
+NOMINATIM_PUID=1000
+NOMINATIM_PGID=1000
+NOMINATIM_USER_PASSWORD=nominatim
+
+# PostGIS
+NOMINATIM_DATABASE_DSN=pgsql:dbname=nominatim;host=postgis;user=nominatim;password=nominatim
+NOMINATIM_POSTGIS_HOST=postgis
+NOMINATIM_POSTGIS_DB=nominatim
+NOMINATIM_POSTGIS_USER=nominatim
+NOMINATIM_POSTGIS_PASSWORD=nominatim
+
+# Server
+NOMINATIM_PBF_PATH=/app/pbf/monaco-latest.osm.pbf
+NOMINATIM_REPLICATION_URL=https://download.geofabrik.de/europe/monaco-updates/
+NOMINATIM_UPDATE_MODE=continuous
+NOMINATIM_PORT=8080
