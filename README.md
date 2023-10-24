@@ -25,8 +25,8 @@ This guide assumes you have *Docker Compose* installed on your system.
 This setup will build an image using the latest release of *Nominatim*, which at the time is `4.3`. Clone the repo and setup the environment:
 
 ```
- $ git clone //
- $ cd 4.3/
+ $ git clone https://github.com/emaphp/nominatim-nginx-docker.git
+ $ cd nominatim-nginx-docker/4.3/
  $ cp contrib/env .env
  $ cp contrib/docker-compose.yml .
 ```
@@ -60,7 +60,8 @@ The main container provides the environment for running `nominatim` and its resp
 
 Here's a few of the things the container will be doing during the build process:
 
- - Nominatim will be downloaded, compiled and installed.
+ - It will download Nominatim and install all development dependencies.
+ - It will apply all patches in `nominatim/patches` and compile it.
  - A user (and group) `nominatim` will be created.
  - Both Nginx and PHP-FPM will be installed. Configuration files will be copied to the container.
 
