@@ -59,9 +59,9 @@ services:
       # REVERSE_ONLY:
       # THREADS:
     volumes:
-      - ./nominatim/pbf:/app/pbf
-      - ./nominatim/scripts:/app/scripts
-      - ./nominatim/config/.env:/nominatim/env
+      - ./nominatim/pbf:/app/pbf:ro
+      - ./nominatim/scripts:/app/scripts:ro
+      - ./nominatim/config/env:/nominatim/.env:ro
     ports:
       - ${NOMINATIM_PORT}:8080
     depends_on:
