@@ -52,8 +52,8 @@ RUN true \
         curl
 
 # Nominatim install
-ENV CURRENT_VERSION=1.0.0
-ENV NOMINATIM_VERSION=4.3.1
+ENV CURRENT_VERSION=1.0.1
+ENV NOMINATIM_VERSION=4.3.2
 ARG USER_AGENT=emaphp/nominatim-nginx-docker:${CURRENT_VERSION}-${NOMINATIM_VERSION}
 
 # Copy patch to avoid database creation during import process
