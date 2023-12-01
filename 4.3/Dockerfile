@@ -91,13 +91,17 @@ ARG PUID=1000
 ENV PUID ${PUID}
 ARG PGID=1000
 ENV PGID ${PGID}
-ARG USER_PASSWORD nominatim
-ENV USER_PASSWORD ${USER_PASSWORD}
+
+# Install OpenSSL
+RUN true \
+    && apt-get -y update -qq \
+    && apt-get install --no-install-recommends --no-install-suggests -q -y openssl
 
 RUN set -xe; \
     groupadd -g ${PGID} nominatim && \
     useradd -l -u ${PUID} -g nominatim -m nominatim && \
-    usermod -p ${USER_PASSWORD} nominatim -s /bin/bash
+    usermod -p `openssl passwd nominatim` nominatim && \
+    usermod -s /bin/bash nominatim
 
 # Install PHP 7.4 using SURY repo
 RUN true \

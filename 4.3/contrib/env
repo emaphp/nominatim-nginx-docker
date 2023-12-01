@@ -26,7 +26,6 @@ NOMINATIM_CONTAINER_NAME=nominatim
 # Building
 NOMINATIM_PUID=1000
 NOMINATIM_PGID=1000
-NOMINATIM_USER_PASSWORD=nominatim
 
 # PostGIS
 NOMINATIM_DATABASE_DSN=pgsql:dbname=nominatim;host=postgis;user=nominatim;password=nominatim

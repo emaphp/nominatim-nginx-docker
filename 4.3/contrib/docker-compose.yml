@@ -42,7 +42,6 @@ services:
       args:
           - PUID=${NOMINATIM_PUID:-1000}
           - PGID=${NOMINATIM_PGID:-1000}
-          - USER_PASSWORD=${NOMINATIM_USER_PASSWORD-nominatim}
     container_name: ${NOMINATIM_CONTAINER_NAME:-nominatim}
     environment:
       # Nominatim
