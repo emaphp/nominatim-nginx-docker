@@ -71,7 +71,6 @@ Environment variables can be organized by section. Some of them will only take e
 
  - `NOMINATIM_PUID`: The `nominatim` user id (default: `1000`).
  - `NOMINATIM_PGID`: The `nominatim` group id (default: `1000`).
- - `NOMINATIM_USER_PASSWORD`: The `nominatim` user password (default: `nominatim`)
 
 #### PostGIS ####
 
@@ -187,4 +186,5 @@ Here's a full list to check which version is adequate for your system:
 | Version     | Release | Nominatim | PHP |
 |-------------|---------|-----------|-----|
 | 1.0.0-4.3.1 | 1.0.0   | 4.3.1     | 7.4 |
+| 1.0.0-4.3.1 | 1.0.0   | 4.3.2     | 7.4 |
 
